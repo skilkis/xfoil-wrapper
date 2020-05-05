@@ -228,7 +228,7 @@ def call(  # noqa C901
     sout = 0
     # Calling xfoil with Poper
     ps = sp.Popen(
-        ["xfoil.exe"],
+        ["xfoil"],
         stdin=sp.PIPE,
         stdout=sout,
         stderr=None,
