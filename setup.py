@@ -15,16 +15,14 @@
 
 """Entry point for setuptools, configuration is in setup.cfg."""
 
-import sys
-import shutil
 import os
+import shutil
+import sys
 
 from setuptools import setup
 from setuptools.command.install import install
 
-XFOIL_BINARY_DIRS = {
-    "win32": "bin/win32"
-}
+XFOIL_BINARY_DIRS = {"win32": "bin/win32"}
 
 INSTALLER_DIR = os.path.dirname(__file__)
 
@@ -40,8 +38,7 @@ class XFOILInstaller(install):
             dst_dir = os.path.join(self.build_lib, "xfoil", "bin")
             shutil.rmtree(dst_dir, ignore_errors=True)
             shutil.copytree(
-                src=os.path.join(INSTALLER_DIR, binary_dir),
-                dst=dst_dir
+                src=os.path.join(INSTALLER_DIR, binary_dir), dst=dst_dir
             )
 
         except KeyError:
@@ -51,10 +48,5 @@ class XFOILInstaller(install):
         super().run()  # Running setuptools installer
 
 
-
-
 if __name__ == "__main__":
-    setup(
-        use_scm_version=True,
-        cmdclass={'install': XFOILInstaller},
-    )
+    setup(use_scm_version=True, cmdclass={"install": XFOILInstaller})
