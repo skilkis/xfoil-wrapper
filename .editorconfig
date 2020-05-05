@@ -1,0 +1,14 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true  # Stop looking for .editorconfig files outside of the project
+
+[*]  # All Files
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[**.rst]  # All Sphinx RST files (Fix for doc8 bug: 1756704)
+indent_size = 3
+end_of_line = lf
