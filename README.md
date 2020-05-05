@@ -11,7 +11,7 @@ rights to [xfoil_module] remain with the original author [Pedro Leal].
 The command to install xfoil_wrapper is as follows:
 
 ``` cmd
-pip install xfoil@https://github.com/skilkis/xfoil_wrapper.zip
+pip install xfoil@git+https://github.com/skilkis/xfoil_wrapper.git
 ```
 
 *Note that currently binaries are only included for the Windows operating
