@@ -1,4 +1,12 @@
+import os
+
 from xfoil.xfoil_module import call
+
+
+def test_xfoil_in_path():
+    """Tests if XFOIL executables are currently in the system path."""
+    assert any(os.path.join("xfoil", "bin") for d in os.environ["PATH"])
+    os.system("xfoil")
 
 
 def test_imports():
