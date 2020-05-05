@@ -6,12 +6,13 @@
 [![CICD: GitHub Actions][build_status]](https://github.com/skilkis/xfoil_wrapper/actions)
 
 This repository serves as an easy installer for AeroPy's [XFOIL Module]. All
-rights to [xfoil_module] remain with the original author [Pedro Leal].
+rights to the [xfoil_module.py] file remain with the original author [Pedro
+Leal].
 
 The command to install xfoil_wrapper is as follows:
 
 ``` cmd
-pip install xfoil@https://github.com/skilkis/xfoil_wrapper.zip
+pip install xfoil@git+https://github.com/skilkis/xfoil_wrapper.git
 ```
 
 *Note that currently binaries are only included for the Windows operating
@@ -26,11 +27,11 @@ additional operating systems, please submit a pull request!
 
 <!-- Un-wrapped Links below -->
 [python_badge]: https://img.shields.io/badge/python-3.7%20|%203.8-blue.svg
-[mit_badge]: https://img.shields.io/badge/license-MIT%202.0-brightgreen.svg
+[mit_badge]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [black_badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [build_status]: https://github.com/skilkis/xfoil_wrapper/workflows/build/badge.svg
 [Git]: https://git-scm.com/
 [XFOIL Module]: https://github.com/leal26/AeroPy/blob/master/aeropy/xfoil_module.py
 [Pedro Leal]: https://github.com/leal26
-[xfoil_module]: src/xfoil/xfoil_module.py
+[xfoil_module.py]: src/xfoil/xfoil_module.py
 [xfoil-python]: https://github.com/DARcorporation/xfoil-python
