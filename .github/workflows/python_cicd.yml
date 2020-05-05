@@ -49,10 +49,10 @@ jobs:
       run: |
         pip install flake8
         flake8 . --count --statistics
-    - name: Unit Testing with Pytest
-      run: |
-        pip install pytest
-        pytest
-    - name: Checking Code Coverage
-      run: |
-        coverage report --fail-under=90
+    # - name: Unit Testing with Pytest
+    #   run: |
+    #     pip install pytest
+    #     pytest
+    # - name: Checking Code Coverage
+    #   run: |
+    #     coverage report --fail-under=90
