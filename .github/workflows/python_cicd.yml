@@ -1,0 +1,58 @@
+# MIT License
+#
+# Copyright (c) 2020 San Kilkis
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+name: build
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Python ${{ matrix.python-version }}
+
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Restoring Downloaded Packages
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.cfg') }}-${{ matrix.python-version }}
+    - name: Installing Package and Dependencies
+      # All dependencies have to be specified in setup.cfg!
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[dev]
+    - name: Linting/Style Checking with Flake8 (Black, isort, docstrings)
+      run: |
+        pip install flake8
+        flake8 . --count --statistics
+    - name: Unit Testing with Pytest
+      run: |
+        pip install pytest
+        pytest
+    - name: Checking Code Coverage
+      run: |
+        coverage report --fail-under=90
