@@ -1,5 +1,6 @@
 import os
 import sys
+
 import pkg_resources
 
 from .xfoil_module import (
@@ -32,9 +33,7 @@ __all__ = [
 # Currently only Windows is supported!
 PLATFORM = sys.platform
 if PLATFORM == "win32":
-    os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "bin", PLATFORM
-    )
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "bin", PLATFORM)
     os.environ["PATH"] += pkg_resources.resource_filename("xfoil", "bin")
 else:
     raise NotImplementedError(
