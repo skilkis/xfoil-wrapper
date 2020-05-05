@@ -1,5 +1,3 @@
-import os
-
 from xfoil.xfoil_module import call
 
 

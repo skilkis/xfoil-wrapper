@@ -1,8 +1,3 @@
-import os
-import sys
-
-import pkg_resources
-
 from .xfoil_module import (
     M_crit,
     alfa_for_file,
