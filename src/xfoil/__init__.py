@@ -28,13 +28,3 @@ __all__ = [
     "find_alpha_L_0",
     "M_crit",
 ]
-
-# Updating path temporarily to make XFOIL binaries callable.
-# Currently only Windows is supported!
-PLATFORM = sys.platform
-if PLATFORM == "win32":
-    os.environ["PATH"] += pkg_resources.resource_filename("xfoil", "bin")
-else:
-    raise NotImplementedError(
-        "Currently XFOIL can only be called from Windows"
-    )

@@ -24,9 +24,38 @@ import datetime
 import math
 import os  # To check for already existing files and delete them
 import subprocess as sp
+import sys
 import time
+from typing import Dict
 
 import numpy as np
+import pkg_resources
+
+
+def get_xfoil_executable(bin_path: str) -> str:
+    """Gets full-path of xfoil executable from within ``bin_path``."""
+    return os.path.join(
+        bin_path, next(filter(lambda d: "xfoil" in d, os.listdir(bin_path)))
+    )
+
+
+def get_xfoil_environment(bin_path: str) -> Dict[str, str]:
+    """Returns an environment dictionary with xfoil added to PATH."""
+    env = os.environ.copy()
+    env["PATH"] += bin_path
+    return env
+
+
+ALLOWED_PLATFORMS = ["win32"]
+
+if sys.platform in ALLOWED_PLATFORMS:
+    bin_path = pkg_resources.resource_filename("xfoil", "bin")
+    XFOIL_ENVIRONMENT = get_xfoil_environment(bin_path)
+    XFOIL_EXECUTABLE = get_xfoil_executable(bin_path)
+else:
+    raise NotImplementedError(
+        f"Currently XFOIL can only be called from '{ALLOWED_PLATFORMS}'"
+    )
 
 
 def call(  # noqa C901
@@ -226,12 +255,14 @@ def call(  # noqa C901
     # Random output variable to avoid writing stuff from xfoil on the
     # console
     sout = 0
-    # Calling xfoil with Poper
+    # Calling xfoil with Popen
     ps = sp.Popen(
-        ["xfoil"],
+        [],
+        executable=XFOIL_EXECUTABLE,
         stdin=sp.PIPE,
         stdout=sout,
         stderr=None,
+        env=XFOIL_ENVIRONMENT,
         startupinfo=startupinfo,
         encoding="utf8",
     )
