@@ -26,6 +26,7 @@ import os  # To check for already existing files and delete them
 import subprocess as sp
 import sys
 import time
+from functools import cached_property
 from typing import Dict
 
 import numpy as np
@@ -49,9 +50,9 @@ def get_xfoil_environment(bin_path: str) -> Dict[str, str]:
 ALLOWED_PLATFORMS = ["win32"]
 
 if sys.platform in ALLOWED_PLATFORMS:
-    bin_path = pkg_resources.resource_filename("xfoil", "bin")
-    XFOIL_ENVIRONMENT = get_xfoil_environment(bin_path)
-    XFOIL_EXECUTABLE = get_xfoil_executable(bin_path)
+    BIN_PATH = pkg_resources.resource_filename("xfoil", "bin")
+    XFOIL_ENVIRONMENT = get_xfoil_environment(BIN_PATH)
+    XFOIL_EXECUTABLE = get_xfoil_executable(BIN_PATH)
 else:
     raise NotImplementedError(
         f"Currently XFOIL can only be called from '{ALLOWED_PLATFORMS}'"
@@ -1136,3 +1137,42 @@ def M_crit(airfoil, pho, speed_sound, lift, c):
                 Data_crit["alpha"] = Data["alpha"][i]
         # if Data_crit['CL']==previous_iteration:
     return Data_crit
+
+
+class XFOILRunner:
+    def __init__(self, bin_path: str = BIN_PATH):
+        self.bin_path = bin_path
+
+    # TODO link subprocess to bin_path
+    @cached_property
+    def subprocess(self):
+        startupinfo = sp.STARTUPINFO()
+        startupinfo.dwFlags |= sp.STARTF_USESHOWWINDOW
+        return sp.Popen(
+            [],
+            executable=get_xfoil_executable(self.bin_path),
+            stdin=sp.PIPE,
+            stdout=None,
+            stderr=None,
+            env=get_xfoil_environment(self.bin_path),
+            startupinfo=startupinfo,
+            encoding="utf8",
+        )
+
+    def call(self, command: str, echo=False):
+        """Submit a command through PIPE to the command lineself.
+
+        (Therefore leading the commands to xfoil.)
+
+        @author: Hakan Tiftikci
+        """
+        self.subprocess.stdin.write(f"{command}\n")
+        if echo:
+            print(command)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.subprocess.stdin.close()
+        self.subprocess.wait()
